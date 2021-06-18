@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib 
 import matplotlib.pyplot as plt
 import rebound as rb
-#from IPython import get_ipython
+from IPython import get_ipython
 
 
 # In[2]:
@@ -51,9 +51,7 @@ def survival(initial):
 
 # In[ ]:
 
-#get_ipython().run_line_magic('time', 'pool = rb.InterruptiblePool()\nmapping = pool.map(func= survival, iterable= tup_list)')
-pool = rb.InterruptiblePool()
-mapping = pool.map(func= survival, iterable= tup_list)
+get_ipython().run_line_magic('time', 'pool = rb.InterruptiblePool()\nmapping = pool.map(func= survival, iterable= tup_list)')
 
 
 # In[ ]:
