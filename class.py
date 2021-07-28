@@ -9,8 +9,11 @@ import rebound as rb
 tup_num = 25
 e_b = np.linspace(0, 0.7, tup_num)
 a_p = np.linspace(1, 5, tup_num)
+mu = np.linspace(0.1, 1.0, tup_num)
 Np = 15
 tup_list = []
+
+for m in mu:
 
 for e in e_b:
     for a in a_p:
@@ -22,19 +25,22 @@ def survival(initial):
     sim = rb.Simulation()
     sim.integrator = "whfast"
     
-    sim.add(m=1, hash="Binary 1")
-    sim.add(m=1, a=1, e= eb, hash="Binary 2")
+    m1 = 1
+    m2 = abs((m1*mu)/(1-mu))
+    
+    sim.add(m=m1, hash="Binary 1")
+    sim.add(m=m2, a=1, e= eb, hash="Binary 2")
     
     #initializing Np massless planets
     for p in range(Np):
-	f_plan = np.random.rand()*2.*np.pi
+        f_plan = np.random.rand()*2.*np.pi
         sim.add(m=0, a= ap, e=0, f= f_plan)
     
     #array to keep track of survival times
     sim.move_to_com()
 
-    directory_orbit = '/mnt/raid-cita/ksmith/ClassOrbParams/'
-    filename_orbit = r"eb{:.3f}_ap{:.3f}_Np{:.1f}_tup{:.1f}.bin".format(eb,ap,Np,tup_num)
+    directory_orbit = '/mnt/raid-cita/ksmith/ClassOrbParamsKC/'
+    filename_orbit = r"KCeb{:.3f}_ap{:.3f}_Np{:.1f}_tup{:.1f}_mu{:.1f}.bin".format(eb,ap,Np,tup_num,mu)
     sim.automateSimulationArchive(directory_orbit+filename_orbit, interval=1e1, deletefile=True)
 
     
@@ -66,14 +72,18 @@ pool = rb.InterruptiblePool(processes=16)
 mapping = pool.map(func= survival, iterable= tup_list)
 
 directory_surv = '/mnt/raid-cita/ksmith/ClassSurvTimes/'
-f_surv = f'map_tup{tup_num}plan{Np}.txt'
-np.savetxt(directory_surv+f_surv, mapping)
+txt_surv = f'map_tup{tup_num}plan{Np}_mu{mu}.txt'
+npy_surv = f'map_tup{tup_num}plan{Np}_mu{mu}.npy'
+bin_surv = f'map_tup{tup_num}plan{Np}_mu{mu}.bin'
+np.savetxt(directory_surv+txt_surv, mapping)
+np.savetxt(directory_surv+npy_surv, mapping)
+np.savetxt(directory_surv+bin_surv, mapping)
 
 fig = plt.figure()
 figure = np.reshape(mapping, [tup_num,tup_num])
 
 plt.pcolormesh(e_b, a_p, figure.T, shading='auto')
-plt.title('Mean Survival Times')
+plt.title(f'Mean Survival Times (mu={mu})')
 plt.xlabel('Binary Eccentricity (e)')
 plt.ylabel('Planetary Semi-Major Axis (a)')
 plt.xlim(0.0,0.7)
@@ -84,6 +94,7 @@ plt.plot(e_b, a_b, color='white')
 plt.scatter(e_b, a_b, color='white')
 
 plt.colorbar(label='Test Particle Survival Times')
+plt.show()
 
 directory_test = '/mnt/raid-cita/ksmith/'
 completed = 'The simulation finished!'
