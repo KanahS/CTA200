@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-%%time
 import reboundx as rx
 import numpy as np
 import matplotlib 
