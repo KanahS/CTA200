@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import reboundx as rx
 import numpy as np
 import matplotlib 
 import matplotlib.pyplot as plt
 import rebound as rb
+
 
 tup_num = 5 # change back to 50
 e_b = np.linspace(0, 0.8, tup_num)
@@ -106,7 +108,7 @@ def survival(initial):
     surv[(surv==0)] = time
     print(f'simulation finished, {len(sim.particles)-2} planets remaining')
     return np.mean(surv)
-%%time # remove if it's not working
+
 pool = rb.InterruptiblePool(processes=32)
 mapping = pool.map(func= survival, iterable= tup_list)
 
