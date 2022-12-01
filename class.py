@@ -141,11 +141,11 @@ def colour_plot(mapp):
         #ax[i].set_ylim(1,5)
 
     plt.colorbar(pcm, location='right',label='Test Particle Survival Times')
-
+    plt.show()
 #pool = rb.InterruptiblePool(processes=32)
 #mapping = pool.map(func= survival, iterable= tup_list)
 colour_plot(mapping)
-plt.show()
+#plt.show()
 
 
 
