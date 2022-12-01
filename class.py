@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+%%time
 import reboundx as rx
 import numpy as np
 import matplotlib 
@@ -142,7 +143,11 @@ def colour_plot(mapp):
 
     plt.colorbar(pcm, location='right',label='Test Particle Survival Times')
 
+#pool = rb.InterruptiblePool(processes=32)
+#mapping = pool.map(func= survival, iterable= tup_list)
 colour_plot(mapping)
+plt.show()
+
 
 
 
