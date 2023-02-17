@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import rebound as rb
 
 
-tup_num = 5 # change back to 50
+tup_num = 2 # change back to 50
 e_b = np.linspace(0, 0.8, tup_num)
 a_p = np.linspace(1, 5, tup_num)
 Np = 15
@@ -145,7 +145,7 @@ def colour_plot(mapp):
 #pool = rb.InterruptiblePool(processes=32)
 #mapping = pool.map(func= survival, iterable= tup_list)
 colour_plot(mapping)
-#plt.show()
+#plt.show(block=False)
 
 
 
